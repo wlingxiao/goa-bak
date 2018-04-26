@@ -14,7 +14,7 @@ class HandlerPipelineReadTests extends BaseTests {
   var pipeline: HandlerPipeline = _
 
   before {
-    pipeline = new HandlerPipeline()
+    pipeline = HandlerPipeline(new HeadHandler)
   }
 
   test("为 pipeline 添加一个 Handler，handler 读取消息后 ret 的值将增加，ret 的值将返回 2") {

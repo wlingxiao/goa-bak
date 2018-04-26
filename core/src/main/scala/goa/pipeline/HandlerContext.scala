@@ -4,15 +4,11 @@ import java.nio.ByteBuffer
 
 import scala.concurrent.Future
 
-class HandlerContext {
+class HandlerContext(val handler: Handler, val pipeline: HandlerPipeline) {
 
   var prevCtx: HandlerContext = _
 
   var nextCtx: HandlerContext = _
-
-  var handler: Handler = _
-
-  var pipeline: HandlerPipeline = _
 
   def write(msg: Object): Future[Unit] = {
     if (prevCtx != null) {
@@ -31,4 +27,12 @@ class HandlerContext {
       nextCtx.handler.apply(nextCtx)
     }
   }
+}
+
+object HandlerContext {
+
+  def apply(handler: Handler, pipeline: HandlerPipeline): HandlerContext = {
+    new HandlerContext(handler, pipeline)
+  }
+
 }

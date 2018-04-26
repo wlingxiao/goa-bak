@@ -50,10 +50,6 @@ class HandlerPipeline {
     this
   }
 
-  def sendRead(msg: Object): Unit = {
-    head.nextCtx.handler.apply(head.nextCtx)
-  }
-
   def sendInboundCommand(): Unit = {
     head.handler.apply(head)
   }

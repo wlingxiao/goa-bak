@@ -11,8 +11,13 @@ import scala.util.{Failure, Success}
 
 class HandlerPipelineReadTests extends BaseTests {
 
+  var pipeline: HandlerPipeline = _
+
+  before {
+    pipeline = new HandlerPipeline()
+  }
+
   test("为 pipeline 添加一个 Handler，handler 读取消息后 ret 的值将增加，ret 的值将返回 2") {
-    val pipeline = new HandlerPipeline()
     val ret = new AtomicInteger(1)
     pipeline.addLast(ctx => {
       ctx.read().onComplete {
@@ -29,8 +34,6 @@ class HandlerPipelineReadTests extends BaseTests {
   }
 
   test("为 pipeline 添加两个 handler，前一个 handler 调用 next 后再执行后一个handler，此时 ret 的值将返回 2") {
-
-    val pipeline = new HandlerPipeline()
     val ret = new AtomicInteger(1)
 
     pipeline.addLast { ctx =>
@@ -52,8 +55,6 @@ class HandlerPipelineReadTests extends BaseTests {
   }
 
   test("为 pipeline 添加两个 handler，第二个 handler 读取消息，ret 的值为第一个 handler 的返回值 ") {
-
-    val pipeline = new HandlerPipeline()
     val ret = new AtomicReference[ByteBuffer]()
 
     pipeline.addLast(new Handler {
@@ -81,8 +82,6 @@ class HandlerPipelineReadTests extends BaseTests {
   }
 
   test("为 pipeline 添加三个 handler，最后一个handler读取数据时，结果为前两个 handler 结果的和 ") {
-
-    val pipeline = new HandlerPipeline()
     val ret = new AtomicReference[ByteBuffer]()
 
     pipeline.addLast(new Handler {

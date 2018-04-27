@@ -4,7 +4,7 @@ import java.net.InetSocketAddress
 import java.nio.channels.{AsynchronousCloseException, AsynchronousServerSocketChannel, AsynchronousSocketChannel, CompletionHandler}
 
 import goa.Logging
-import goa.pipeline.{Handler, HandlerContext, HandlerPipeline}
+import goa.pipeline.HandlerPipeline
 
 class NIO2Server(initializer: (HandlerPipeline) => Unit) extends Logging {
 
@@ -24,11 +24,7 @@ class NIO2Server(initializer: (HandlerPipeline) => Unit) extends Logging {
     val handler = new CompletionHandler[AsynchronousSocketChannel, Null] {
       override def completed(channel: AsynchronousSocketChannel, attachment: Null): Unit = {
         listen()
-        val pipeline = HandlerPipeline(new Handler {
-          override def apply(ctx: HandlerContext): Unit = {
-            ctx.next()
-          }
-        })
+        val pipeline = HandlerPipeline(new ByteBufferHead(channel, 1024))
         initializer(pipeline)
         pipeline.sendInboundCommand()
       }

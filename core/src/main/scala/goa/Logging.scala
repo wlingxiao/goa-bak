@@ -4,7 +4,7 @@ import org.slf4j.{LoggerFactory, Logger => Slf4JLogger}
 
 private[goa] trait Logging {
 
-  protected lazy val logger = Logger(this)
+  protected lazy val log = Logger(this)
 
 }
 

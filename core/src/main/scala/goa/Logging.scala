@@ -14,6 +14,8 @@ private[goa] abstract class Logger {
 
   def error(msg: => String, t: => Throwable): Unit
 
+  def info(msg: => String): Unit
+
 }
 
 private[goa] object Logger {
@@ -28,6 +30,12 @@ private[goa] object Logger {
     override def error(msg: => String, t: => Throwable): Unit = {
       if (underlying.isErrorEnabled) {
         underlying.error(msg, t)
+      }
+    }
+
+    override def info(msg: => String): Unit = {
+      if (underlying.isInfoEnabled) {
+        underlying.info(msg)
       }
     }
   }
